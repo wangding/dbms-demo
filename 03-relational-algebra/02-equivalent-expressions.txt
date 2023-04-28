@@ -1,0 +1,109 @@
+一、选择运算
+
+1. 交换律
+
+查找数学专业的女生【选择运算之交换律】
+σSsex='F'(σSdept='Math'(Student))
+σSdept='Math'(σSsex='F'(Student))
+σSdept='Math'∧Ssex='F'(Student)
+
+2. 合并律
+
+查找计算机系 19 岁男生【选择运算之合并律】
+σSsex='M'(σSage=19(σSdept='CS'(Student)))
+σSsex='M'∧Sage=19∧Sdept='CS'(Student)
+
+二、投影运算
+
+1. 归一律
+
+查找全体学生的学号和姓名【投影运算之归一律】
+πSno,Sname(πSno,Sname,Sage(Student))
+πSno,Sname(Student)
+
+三、并运算
+
+1. 结合律
+
+查找物理系、计算机系以及数学系的学生【并运算之结合律】
+(σSdept='Physics'(Student) ∪ σSdept='CS'(Student)) ∪ σSdept='Math'(Student)
+σSdept='Physics'(Student) ∪ (σSdept='CS'(Student) ∪ σSdept='Math'(Student))
+σSdept='Physics'∨Sdept='CS'∨Sdept='Math'(Student)
+
+2. 分配律
+
+查找计算机系和物理系的所有女生【并运算之分配律】
+σSsex='F'(σSdept='CS'(Student) ∪ σSdept='Math'(Student))
+σSsex='F'(σSdept='CS'(Student)) ∪ σSsex='F'(σSdept='Math'(Student))
+σSsex='F'∧(Sdept='CS'∨Sdept='Math')(Student)
+
+四、交运算
+
+1. 结合律
+
+查找计算机系 19 岁男生【交运算之结合律】
+(σSsex='M'(Student) ∩ σSdept='CS'(Student)) ∩ σSage=19(Student)
+σSsex='M'(Student) ∩ (σSdept='CS'(Student) ∩ σSage=19(Student))
+
+2. 分配律
+
+查找计算机系 19 岁男生【交运算之分配律】
+1)
+σSsex='M'(σSdept='CS'(Student) ∩ σSage=19(Student))
+σSsex='M'(σSdept='CS'(Student)) ∩ σSsex='M'(σSage=19(Student))
+
+2)
+σSsex='M'(σSdept='CS'(Student) ∩ σSage=19(Student))
+σSsex='M'(σSdept='CS'(Student)) ∩ σSage=19(Student)
+
+五、差运算
+
+1. 分配律
+
+查找学号为 PH-001，但没选 1002 课程，成绩为 88 分的学生【差运算之分配律】
+1)
+σGrade=88(σSno='PH-001'(SC) - σCno='1002'(SC))
+σGrade=88(σSno='PH-001'(SC)) - σGrade=88(σCno='1002'(SC))
+
+2)
+σGrade=88(σSno='PH-001'(SC) - σCno='1002'(SC))
+σGrade=88(σSno='PH-001'(SC)) - σCno='1002'(SC)
+
+六、连接运算
+
+1. 交换律
+
+查询学生和成绩信息【连接运算之交换律】
+Student ⨝ SC
+SC ⨝ Student
+
+2. 结合律
+
+查询学生、课程和成绩信息【连接运算之结合律】
+(Student ⨝ SC) ⨝ Course
+Student ⨝ (SC ⨝ Course)
+
+3. 分配律
+1)
+查找学号为 PH-001 的学生和成绩信息【连接和选择运算之分配律】
+σStudent.Sno='PH-001'(Student ⨝ SC)
+σSno='PH-001'(Student) ⨝ SC
+
+2)
+查询学号为 PH-001 且成绩为 88 分的学生和成绩信息【连接和选择运算之分配律】
+σStudent.Sno='PH-001'∧SC.Grade=88 (Student ⨝ SC)
+σSno='PH-001'(Student) ⨝ σGrade=88(SC)
+
+3)
+查询学生和成绩信息，包括：学号、系部、课号和成绩【连接和投影运算之分配律】
+πSno,Sdept,Cno,Grade(Student ⨝ SC)
+πSno,Sdept(Student) ⨝ πCno,Grade,Sno(SC)
+
+查找计算机系 19 岁男生
+σSsex='M'∧Sage=19∧Sdept='CS'(Student)
+σSsex='M'(σSage=19(σSdept='CS'(Student)))
+(σSsex='M'(Student) ∩ σSdept='CS'(Student)) ∩ σSage=19(Student)
+σSsex='M'(Student) ∩ (σSdept='CS'(Student) ∩ σSage=19(Student))
+σSsex='M'(σSdept='CS'(Student) ∩ σSage=19(Student))
+σSsex='M'(σSdept='CS'(Student)) ∩ σSsex='M'(σSage=19(Student))
+σSsex='M'(σSdept='CS'(Student)) ∩ σSage=19(Student)
