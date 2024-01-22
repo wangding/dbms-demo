@@ -11,12 +11,26 @@ showMenu() {
 
 showMenu
 
+if [[ -f /etc/os-release ]]; then
+  source /etc/os-release
+  if [[ $ID == "centos" ]]; then
+    dbms="systemctl status mysqld"
+    app="yum list installed|grep mysql"
+  elif [[ $ID == "ubuntu" ]]; then
+    dbms="systemctl status mysql"
+    app="dpkg --get-selections|grep mysql"
+  else
+    echo "Unknown Linux System"
+    exit 1
+  fi
+fi
+
 while [ $menu -eq $menu ];
 do
 case $menu in
   1) # 查看数据库
     echo -e '\e[42m1) databases in dbms\n\e[49m'
-    mysql -h 127.0.0.1 -u root -pddd -e "show databases;" 2>/dev/null
+    mysql -e "show databases;" 2>/dev/null
     echo -e '\e[42m\n2) the directories of database in /var/lib/mysql\n\e[49m'
     sudo ls /var/lib/mysql/ --color
     echo -n '按任意键继续...'; read
@@ -27,7 +41,7 @@ case $menu in
     echo -e '\e[42m1) myslqd process info\e[49m\n'
     ps aux | grep mysql
     echo -e '\e[42m\n2) mysqld process status\n\e[49m'
-    systemctl status mysqld
+    $dbms
     echo -e '\e[42m\n3) mysqld apps in /usr/sbin\e[49m\n'
     sudo ls --color /usr/sbin/my*
     echo -n '按任意键继续...'; read
@@ -36,7 +50,7 @@ case $menu in
 
   3) # 查看应用程序
     echo -e '\e[42m1) installed mysql packages\n\e[49m'
-    yum list installed |grep mysql
+    eval $app
     echo -e "\e[42m\n2) mysql's locations\n\e[49m"
     which mysql
     echo -e '\e[42m\n3) mysql apps in /usr/bin/\n\e[49m'
