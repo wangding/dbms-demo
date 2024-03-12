@@ -64,3 +64,9 @@ intersect
 (select * from set_demo.set_a)
 except
 (select * from set_demo.set_b);
+
+## 积 cross join
+
+# 对 set_demo 数据库的 set_a 和 set_c 两个表做积运算，观察查询结果
+
+select * from set_demo.set_a cross join set_demo.set_c;
