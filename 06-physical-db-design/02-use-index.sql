@@ -5,31 +5,14 @@
 drop database if exists index_demo;
 create database index_demo;
 
-drop table if exists index_demo.abc;
 create table index_demo.abc (
-  id int(11) not null auto_increment,
+  id int(11) not null,
   tag char(8) not null,
   a int not null,
   b int not null,
-  c int not null,
-  primary key (id)
+  c int not null
 );
 
-drop table if exists index_demo.abc_idx;
-create table index_demo.abc_idx (
-  id int(11) not null auto_increment,
-  tag char(8) not null,
-  a int not null,
-  b int not null,
-  c int not null,
-  primary key (id),
-  index idx_a_b_c (a,b,c),
-  index idx_b_c (b,c),
-  index idx_tag (tag),
-  index idx_tag4 (tag(4))
-);
-
-drop procedure if exists index_demo.insertData;
 delimiter $
 create procedure index_demo.insertData()
 begin
@@ -40,11 +23,17 @@ begin
     set a = n % 10000;
     set b = n % 1000;
     set c = n % 100;
-    set tag = rpad(n+1, 8, '0');
+    set tag = rpad(n, 8, '0');
+    insert into index_demo.abc values(n, tag, a, b, c);
     set n = n + 1;
-    insert into index_demo.abc(tag, a, b, c) values(tag, a, b, c);
-    insert into index_demo.abc_idx(tag, a, b, c) values(tag, a, b, c);
   end while;
+  create table index_demo.abc_idx as select * from index_demo.abc;
+  alter table index_demo.abc add primary key(id);
+  alter table index_demo.abc_idx add primary key(id);
+  create index idx_a_b_c on index_demo.abc_idx(a, b, c);
+  create index idx_b_c on index_demo.abc_idx(b, c);
+  create index idx_tag on index_demo.abc_idx(tag);
+  create index idx_tag4 on index_demo.abc_idx(tag(4));
 end $
 delimiter ;
 
