@@ -26,8 +26,8 @@ show variables like '%engine%';
 # 创建 tb_eng 表，属性为 `id int, name varchar(20)`
 
 create table st.tb_eng (
-  id int not null,
-  name varchar(20) not null
+  id int,
+  name varchar(20)
 );
 show tables from st;
 
@@ -45,8 +45,8 @@ alter table st.tb_eng engine = myisam;
 # 创建 tb_mem 表，属性为 `id int, name varchar(20)`，使用 memory 存储引擎
 
 create table st.tb_mem (
-  id int not null,
-  name varchar(20) not null
+  id int,
+  name varchar(20)
 ) engine=memory;
 show tables from st;
 
@@ -80,8 +80,8 @@ select * from st.tb_mem;       # 没有数据，为什么？
 # 创建 tb_csv 表 `id int, name varchar(20)` 使用 csv 引擎
 
 create table st.tb_csv (
-  id int not null,
-  name varchar(20) not null
+  id int,
+  name varchar(20)
 ) engine=csv;
 
 show tables from st;
